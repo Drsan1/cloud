@@ -5,28 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Website Title</title>
     <!-- Add any additional meta tags, stylesheets, or scripts here -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </head>
 <body>
+
+    <script>
+        // Obfuscated password
+        var encryptedPassword = "RzhtbjhhUnE="; // Use a tool to encrypt your password
+
+        // Prompt the user for a password
+        var password = prompt("Enter the password:");
+
+        // Check if the entered password is correct
+        if (btoa(password) !== encryptedPassword) {
+            // Redirect to an error page or display an error message
+            window.location.href = "error.html";
+        } else {
+            // If password is correct, decrypt and display the main content
+            var encryptedContent = "encrypted content here"; // Replace with your encrypted content
+            var decryptedContent = CryptoJS.AES.decrypt(encryptedContent, password).toString(CryptoJS.enc.Utf8);
+            
+            document.getElementById("main-content").innerHTML = decryptedContent;
+            document.getElementById("main-content").style.display = "block";
+        }
+    </script>
+
     <header>
-        <h1>Welcome to Your Website!</h1>
+        <h1>Well done!</h1>
         <!-- Add navigation or other header content here -->
     </header>
 
-    <main>
-        <section>
-            <h2>About Us</h2>
-            <p>This is a simple website to showcase our company or project.</p>
-        </section>
-
-        <section>
-            <h2>Contact Us</h2>
-            <p>You can reach us at <a href="mailto:info@example.com">info@example.com</a>.</p>
-        </section>
+    <main id="main-content" style="display: none;">
+        <!-- Encrypted content will be decrypted and displayed here -->
     </main>
-
-    <footer>
-        <p>&copy; 2024 Your Company or Project Name. All rights reserved.</p>
-        <!-- Add any additional footer content or links here -->
-    </footer>
 </body>
 </html>
