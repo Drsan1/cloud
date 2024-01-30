@@ -21,12 +21,17 @@
             // Redirect to an error page or display an error message
             window.location.href = "error.html";
         } else {
-            // If password is correct, decrypt and display the main content
+            // Decrypt and display the main content
             var encryptedContent = "encrypted content here"; // Replace with your encrypted content
-            var decryptedContent = CryptoJS.AES.decrypt(encryptedContent, password).toString(CryptoJS.enc.Utf8);
-            
-            document.getElementById("main-content").innerHTML = decryptedContent;
-            document.getElementById("main-content").style.display = "block";
+            try {
+                var decryptedContent = CryptoJS.AES.decrypt(encryptedContent, password).toString(CryptoJS.enc.Utf8);
+                document.getElementById("main-content").innerHTML = decryptedContent;
+
+                // Set the display property to "block" after decryption
+                document.getElementById("main-content").style.display = "block";
+            } catch (error) {
+                console.error("Error decrypting content:", error);
+            }
         }
     </script>
 
@@ -35,8 +40,44 @@
         <!-- Add navigation or other header content here -->
     </header>
 
-    <main id="main-content" style="display: none;">
+    <main id="main-content">
         <!-- Encrypted content will be decrypted and displayed here -->
+        
+        <!-- File input for upload -->
+        <label for="file">Choose a file:</label>
+        <input type="file" id="file" onchange="handleFileUpload()">
+        <p id="file-info"></p>
     </main>
+
+    <script>
+        function handleFileUpload() {
+            var fileInput = document.getElementById('file');
+            var fileInfo = document.getElementById('file-info');
+            var file = fileInput.files[0];
+
+            if (file) {
+                // Display file information
+                fileInfo.textContent = 'File selected: ' + file.name + ' (' + formatBytes(file.size) + ')';
+                
+                // Perform file upload handling here
+                console.log("File selected:", file);
+            } else {
+                fileInfo.textContent = 'No file selected';
+            }
+        }
+
+        // Function to format bytes into a human-readable format
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+    </script>
+
 </body>
 </html>
